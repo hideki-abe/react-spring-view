@@ -9,6 +9,7 @@ import {
 } from "react-router-dom";
 import Login from '../views/login';
 import CadastroUsuario from '../views/cadastroUsuario';
+import Home from '../views/home';
 
 class App extends React.Component{
  render() {
@@ -39,7 +40,7 @@ class App extends React.Component{
                 <Link className='nav-link' to="/cadastro-usuarios">Usuarios</Link>
               </li>
               <li className='nav-item'>
-                <Link className='nav-link' to="/">Lancamentos</Link>
+                <Link className='nav-link' to="/lancamentos">Lancamentos</Link>
               </li>
               <li className='nav-item'>
                 <Link className='nav-link' to="/login">Login</Link>
@@ -55,6 +56,9 @@ class App extends React.Component{
             </Route>
             <Route path="/cadastro-usuarios">
               <CadastroUsuario />
+            </Route>
+            <Route path="/">
+              <Home />
             </Route>
           </Switch>
         </div>
