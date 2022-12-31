@@ -18,7 +18,7 @@ class App extends React.Component{
       <Router>
         <div className="navbar navbar-expand-lg fixed-top navbar-dark bg-primary">
           <div className="container">
-            <a href="home.html"className="navbar-brand">
+            <a href="/home"className="navbar-brand">
               Minhas Finanças
             </a>
             <button
