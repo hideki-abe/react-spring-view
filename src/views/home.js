@@ -1,5 +1,7 @@
 import React from "react";
 import { withRouter } from "react-router-dom";
+import UsuarioService from "../app/service/usuarioService";
+import LocalStorageService from "../app/service/localstorageService";
 
 class Home extends React.Component {
 
@@ -7,8 +9,24 @@ class Home extends React.Component {
         saldo: 0
     }
 
+    constructor() {
+        super();
+        this.UsuarioService = new UsuarioService();
+    }
+
     prepareCadastrar = () => {
         this.props.history.push('/cadastro-usuarios');
+    }
+
+    componentDidMount() {
+        const usuarioLogado = LocalStorageService.obterItem('_usuario_logado');
+
+        this.UsuarioService.obterSaldoPorUsuario(usuarioLogado.id)
+            .then(response => {
+                this.setState({ saldo: response.data });
+            }).catch(error => {
+                console.error(error.response);
+            })
     }
 
     render() {
@@ -21,7 +39,7 @@ class Home extends React.Component {
                 <p>E essa é sua área administrativa, utilize um dos menus ou botões abaixo para navegar pelo sistema.</p>
                 <p className="lead">
                 <a className="btn btn-primary btn-lg" href="/cadastro-usuarios" role="button"><i className="fa fa-users"></i>  Cadastrar Usuário</a>
-                <a className="btn btn-danger btn-lg" href="/" role="button"><i className="fa fa-users"></i>  Cadastrar Lançamento</a>
+                <a className="btn btn-danger btn-lg" href="/" role="button" style={ {marginLeft: '1em'} }><i className="fa fa-users" ></i>  Cadastrar Lançamento</a>
                 </p>
             </div>
         )

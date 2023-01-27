@@ -10,6 +10,7 @@ import {
 import Login from '../views/login';
 import CadastroUsuario from '../views/cadastroUsuario';
 import Home from '../views/home';
+import ConsultaLancamentos from '../views/lancamentos/consultaLancamentos';
 
 class App extends React.Component{
  render() {
@@ -45,6 +46,9 @@ class App extends React.Component{
               <li className='nav-item'>
                 <Link className='nav-link' to="/login">Login</Link>
               </li>
+              <li className='nav-item'>
+                <Link className='nav-link' to="/consulta-lancamentos">Consulta Lancamentos</Link>
+              </li>
             </ul>
           </div>
         </div>
@@ -56,6 +60,9 @@ class App extends React.Component{
             </Route>
             <Route path="/cadastro-usuarios">
               <CadastroUsuario />
+            </Route>
+            <Route path="/consulta-lancamentos">
+              <ConsultaLancamentos />
             </Route>
             <Route path="/">
               <Home />
