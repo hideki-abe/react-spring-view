@@ -19,6 +19,7 @@ class ConsultaLancamentos extends React.Component {
         ano: '',
         mes: '', 
         tipo: '',
+        descricao: '',
         lancamentos: []
     }
 
@@ -28,6 +29,7 @@ class ConsultaLancamentos extends React.Component {
             ano: this.state.ano,
             mes: this.state.mes,
             tipo: this.state.tipo,
+            descricao: this.state.descricao,
             usuario: usuarioLogado.id
         }
 
@@ -47,27 +49,9 @@ class ConsultaLancamentos extends React.Component {
     }
 
     render() {
-        const lista = [
-            { label: 'Selecione...', value:''},
-            { label: 'Janeiro', value:'1'},
-            { label: 'Fevereiro', value:'2'},
-            { label: 'Marco', value:'3'},
-            { label: 'Abril', value:'4'},
-            { label: 'Maio', value:'5'},
-            { label: 'Junho', value:'6'},
-            { label: 'Julho', value:'7'},
-            { label: 'Agosto', value:'8'},
-            { label: 'Setembro', value:'9'},
-            { label: 'Outubro', value:'10'},
-            { label: 'Novembro', value:'11'},
-            { label: 'Dezembro', value:'12'}
-        ];
+        const lista = this.service.obterListaMeses();
 
-        const tipos = [
-            { label: 'Selectione...', value: ''},
-            { label: 'Despesa', value: 'DESPESA'},
-            { label: 'Receita', value: 'RECEITA'}
-        ]
+        const tipos = this.service.obterTipos();
 
         return(
             <Card title="Consulta Lancamentos">
@@ -91,6 +75,15 @@ class ConsultaLancamentos extends React.Component {
                                 onChange={ e => this.setState({mes: e.target.value})}
                                 className="form-control" 
                                 lista={lista}/>
+                            </FormGroup>
+
+                            <FormGroup htmlFor="inputDescricao" label="Descricao">
+                                <input  type="text"
+                                        className="form-control"
+                                        id="inputDesc"
+                                        value={this.state.descricao}
+                                        onChange={e => this.setState({descricao: e.target.value})}
+                                        placeholder="Digite a descricao"/>
                             </FormGroup>
 
                             <FormGroup htmlFor="inputTipo" label="Tipo: ">
