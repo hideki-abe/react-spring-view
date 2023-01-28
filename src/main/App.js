@@ -11,6 +11,9 @@ import Login from '../views/login';
 import CadastroUsuario from '../views/cadastroUsuario';
 import Home from '../views/home';
 import ConsultaLancamentos from '../views/lancamentos/consultaLancamentos';
+import "primereact/resources/themes/lara-light-indigo/theme.css";  //theme
+import "primereact/resources/primereact.min.css";                  //core css
+import "primeicons/primeicons.css";                                //icons
 
 class App extends React.Component{
  render() {

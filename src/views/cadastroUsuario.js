@@ -56,8 +56,8 @@ class CadastroUsuario extends React.Component {
             senha: this.state.senha
         }
 
-        this.service.salvar(usuario).
-            then( response => {
+        this.service.salvar(usuario)
+            .then( response => {
                 console.log("Usuario cadastrado com sucesso! Faca o login para acessar o sistema!");
                 this.props.history.push('/login');
             }).catch(error => {
