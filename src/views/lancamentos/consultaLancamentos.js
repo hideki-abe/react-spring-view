@@ -18,6 +18,7 @@ class ConsultaLancamentos extends React.Component {
     }
 
     state = {
+        id: null,
         ano: '',
         mes: '', 
         tipo: '',
@@ -59,10 +60,10 @@ class ConsultaLancamentos extends React.Component {
     }
 
     editar = (id) => {
-        console.log(id);
+        this.props.history.push(`/cadastro-lancamentos/${id}`);
     }
 
-    abrirConfirmacao(lancamento) {
+    abrirConfirmacao = (lancamento) => {
         this.setState({ showConfirmDialog: true, lancamentoDeletar: lancamento })
     }
 
@@ -83,6 +84,10 @@ class ConsultaLancamentos extends React.Component {
             .catch(error => {
                 console.log(error);
             })
+    }
+
+    preparaFormularioCadastro = () => {
+        this.props.history.push('/cadastro-lancamentos');
     }
 
     render() {
@@ -139,7 +144,7 @@ class ConsultaLancamentos extends React.Component {
 
                             <div style={{marginTop:'1em'}}>
                                 <button onClick={this.buscar} type="button" className="btn btn-success">Buscar</button>
-                                <button type="button" className="btn btn-danger" style={ {marginLeft: '1em'} }>Cadastrar</button>
+                                <button onClick={this.preparaFormularioCadastro} type="button" className="btn btn-danger" style={ {marginLeft: '1em'} }>Cadastrar</button>
                             </div>
                         </div>
                     </div>
@@ -158,7 +163,7 @@ class ConsultaLancamentos extends React.Component {
                         visible={this.state.showConfirmDialog} 
                         style={{ width: '50vw' }} 
                         footer={confirmDialogFooter}
-                        onHide={() => this.setState( {showConfirmDialog: true} )}>
+                        onHide={() => this.setState( {showConfirmDialog: false} )}>
                         Confirma a exclusao deste lancamento?
                 </Dialog>
                 </div>

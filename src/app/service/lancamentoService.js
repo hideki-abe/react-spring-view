@@ -60,7 +60,19 @@ export default class LancamentoService extends ApiService {
      }
 
      deletar(id){
-        this.delete(`/${id}`);
+        return this.delete(`/${id}`);
+     }
+
+     salvar(lancamento) {
+        return this.post('', lancamento);
+     }
+
+     obterPorId(id) {
+        return this.get(`/${id}`);
+     }
+
+     atualizarLancamento(lancamento) { 
+        return this.put(`/${lancamento.id}`, lancamento); 
      }
 
 }

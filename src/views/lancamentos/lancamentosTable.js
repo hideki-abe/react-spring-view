@@ -14,7 +14,7 @@ export default function LancamentosTable(props) {
                 <td>
                     <button type="button" 
                             className="btn btn-primary"
-                            onClick={ e => props.editar(lancamento)}>
+                            onClick={ e => props.editar(lancamento.id)}>
                             Editar
                     </button>
                     <button type="button"

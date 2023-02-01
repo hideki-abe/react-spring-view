@@ -11,6 +11,7 @@ import Login from '../views/login';
 import CadastroUsuario from '../views/cadastroUsuario';
 import Home from '../views/home';
 import ConsultaLancamentos from '../views/lancamentos/consultaLancamentos';
+import CadastroLancamentos from '../views/lancamentos/cadastroLancamentos';
 import "primereact/resources/themes/lara-light-indigo/theme.css";  //theme
 import "primereact/resources/primereact.min.css";                  //core css
 import "primeicons/primeicons.css";                                //icons
@@ -49,9 +50,6 @@ class App extends React.Component{
               <li className='nav-item'>
                 <Link className='nav-link' to="/login">Login</Link>
               </li>
-              <li className='nav-item'>
-                <Link className='nav-link' to="/consulta-lancamentos">Consulta Lancamentos</Link>
-              </li>
             </ul>
           </div>
         </div>
@@ -64,8 +62,11 @@ class App extends React.Component{
             <Route path="/cadastro-usuarios">
               <CadastroUsuario />
             </Route>
-            <Route path="/consulta-lancamentos">
+            <Route path="/lancamentos">
               <ConsultaLancamentos />
+            </Route>
+            <Route path="/cadastro-lancamentos/:id?">
+              <CadastroLancamentos />
             </Route>
             <Route path="/">
               <Home />
