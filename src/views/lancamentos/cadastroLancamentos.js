@@ -47,12 +47,20 @@ class CadastroLancamentos extends React.Component {
 
     submit = () => {
         const usuarioLogado = LocalStorageService.obterItem('_usuario_logado');
-
         const { descricao, valor, mes, ano, tipo } = this.state;
-
         const lancamento = { descricao, valor, mes, ano, tipo, usuario: usuarioLogado.id}
 
-        console.log(lancamento);
+        try {
+            this.service.validar(lancamento);
+
+        } catch(erro) {
+            //const mensagens = erro.mensagens;
+            console.log(erro.mensagens);
+            erro.mensagens.forEach(msg => {
+                console.log(msg);
+            });
+            return false;
+        }
 
         this.service
             .salvar(lancamento)
@@ -154,14 +162,24 @@ class CadastroLancamentos extends React.Component {
                     <div className="col-md-6">
                         {this.state.atualizando ? 
                             (
-                                <button className="btn btn-success" onClick={this.atualizar}>Atualizar</button>
+                                <button className="btn btn-success" 
+                                        onClick={this.atualizar}>
+                                        <i className="pi pi-refresh"></i> Atualizar
+                                </button>
                             ) 
                             : 
                             (
-                                <button className="btn btn-success" onClick={this.submit}>Salvar</button>
+                                <button className="btn btn-success" 
+                                        onClick={this.submit}>
+                                        <i className="pi pi-save"></i> Salvar
+                                </button>
                             )
                         }
-                        <button className="btn btn-danger" onClick={e => this.props.history.push('/consulta-lancamentos')} style={{marginLeft: '1em'}}>Cancelar</button>
+                        <button className="btn btn-danger" 
+                                onClick={e => this.props.history.push('/consulta-lancamentos')} 
+                                style={{marginLeft: '1em'}}>
+                                <i className="pi pi-times"></i> Cancelar
+                        </button>
                     </div>
                 </div>
             </Card>

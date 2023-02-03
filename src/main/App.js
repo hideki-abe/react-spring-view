@@ -1,25 +1,93 @@
 import React from 'react';
-import 'bootswatch/dist/flatly/bootstrap.min.css';
-import '../custom.css';
 import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Link
+  Redirect
 } from "react-router-dom";
 import Login from '../views/login';
 import CadastroUsuario from '../views/cadastroUsuario';
 import Home from '../views/home';
 import ConsultaLancamentos from '../views/lancamentos/consultaLancamentos';
 import CadastroLancamentos from '../views/lancamentos/cadastroLancamentos';
+import AuthService from '../app/service/authService';
+import ProvedorAutenticacao from './provedorAutenticacao';
+import { AuthConsumer } from './provedorAutenticacao';
 import "primereact/resources/themes/lara-light-indigo/theme.css";  //theme
 import "primereact/resources/primereact.min.css";                  //core css
 import "primeicons/primeicons.css";                                //icons
+import 'bootswatch/dist/flatly/bootstrap.min.css';
+import '../custom.css';
 
 class App extends React.Component{
+
  render() {
+
+  const deslogar = () => {
+    AuthService.removerUsuarioAutenticado();
+  }
+
+  function RotaAutenticada( { component: Component, isUsuarioAutenticado, ...props }) {
+    return (
+      <Route {...props} render={ (componentProps) =>{
+        if(isUsuarioAutenticado) { 
+          console.log("usuario autenticado");
+          return (
+            <Component {...componentProps} />
+          )
+        }else {
+          console.log("usuario nao autenticado");
+          return (
+            <Redirect to={ {pathname : '/login', state : { from: componentProps.location } } }/>
+          )
+        }
+      } } />
+    )
+  }
+
+  function NavbarItem( {render, ...props} ) {
+
+    if(render) {
+      return (
+        <li className='nav-item'>
+          <a onClick={props.onClick} className="nav-link" href={props.href}>{props.label}</a>
+        </li>
+      )
+    }else {
+      return false;
+    }
+  }
+
+  function Rotas() {
+    return (
+      <AuthConsumer>{
+        (context) => (
+        <Switch>
+          <Route path="/login" component={Login}/>
+          <Route path="/cadastro-usuarios" component={CadastroUsuario}/>
+
+          <RotaAutenticada isUsuarioAutenticado={context.isUsuarioAutenticado} path="/lancamentos" component={ConsultaLancamentos}/>
+          <RotaAutenticada isUsuarioAutenticado={context.isUsuarioAutenticado} path="/cadastro-lancamentos/:id?" component={CadastroLancamentos}/>
+          <RotaAutenticada isUsuarioAutenticado={context.isUsuarioAutenticado} path="/" component={Home}/>
+        </Switch>
+        )
+      }
+      </AuthConsumer>
+    )
+  }
+
+  const authConsumer = () => (
+    <AuthConsumer>
+      { (context) => (<Rotas isUsuarioAutenticado={context.isUsuarioAutenticado} />) }
+    </AuthConsumer>
+  )
+
+  const isUsuarioAutenticado = () => {
+    return AuthService.isUsuarioAutenticado();
+  }
+
   return(
-    <>
+    <ProvedorAutenticacao>
       <Router>
         <div className="navbar navbar-expand-lg fixed-top navbar-dark bg-primary">
           <div className="container">
@@ -38,46 +106,27 @@ class App extends React.Component{
             </button>
             <div className="collapse navbar-collapse" id="navbarResponsive">
             <ul className="navbar-nav">
-              <li className='nav-item'>
-                <Link className='nav-link' to="/">Home</Link>
-              </li>
-              <li className='nav-item'>
-                <Link className='nav-link' to="/cadastro-usuarios">Usuarios</Link>
-              </li>
-              <li className='nav-item'>
-                <Link className='nav-link' to="/lancamentos">Lancamentos</Link>
-              </li>
-              <li className='nav-item'>
-                <Link className='nav-link' to="/login">Login</Link>
-              </li>
+              <NavbarItem render={isUsuarioAutenticado()} href="/" label="Home"/>
+              <NavbarItem render={isUsuarioAutenticado()} href="/cadastro-usuarios" label="Usuarios"/>
+              <NavbarItem render={isUsuarioAutenticado()} href="/lancamentos" label="Lancamentos"/>
+              <NavbarItem render={isUsuarioAutenticado()} onClick={deslogar} href="/login" label="Sair"/>
             </ul>
           </div>
         </div>
         </div>
         <div className='container'>
           <Switch>
-            <Route path="/login">
-              <Login />
-            </Route>
-            <Route path="/cadastro-usuarios">
-              <CadastroUsuario />
-            </Route>
-            <Route path="/lancamentos">
-              <ConsultaLancamentos />
-            </Route>
-            <Route path="/cadastro-lancamentos/:id?">
-              <CadastroLancamentos />
-            </Route>
-            <Route path="/">
-              <Home />
-            </Route>
+            <Route path="/login" component={Login}/>
+            <Route path="/cadastro-usuarios" component={CadastroUsuario}/>
+            <RotaAutenticada isUsuarioAutenticado={} path="/lancamentos" component={ConsultaLancamentos}/>
+            <RotaAutenticada isUsuarioAutenticado={} path="/cadastro-lancamentos/:id?" component={CadastroLancamentos}/>
+            <RotaAutenticada isUsuarioAutenticado={} path="/" component={Home}/>
           </Switch>
         </div>
       </Router>
-    </>
+    </ProvedorAutenticacao>
   )
  }
 }
-
 
 export default App;
