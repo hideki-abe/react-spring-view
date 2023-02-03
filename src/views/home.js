@@ -1,5 +1,6 @@
 import React from "react";
 import { withRouter } from "react-router-dom";
+import LocalStorageService from "../app/service/localstorageService";
 import UsuarioService from "../app/service/usuarioService";
 import { AuthContext } from "../main/provedorAutenticacao";
 
@@ -19,8 +20,9 @@ class Home extends React.Component {
     }
 
     componentDidMount() {
-        const usuarioLogado = this.context.usuarioAutenticado;
-        
+        //const usuarioLogado = this.context.usuarioAutenticado;
+        const usuarioLogado = LocalStorageService.obterItem('_usuario_logado');
+
         this.UsuarioService.obterSaldoPorUsuario(usuarioLogado.id)
             .then(response => {
                 this.setState({ saldo: response.data });

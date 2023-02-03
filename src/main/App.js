@@ -12,7 +12,6 @@ import ConsultaLancamentos from '../views/lancamentos/consultaLancamentos';
 import CadastroLancamentos from '../views/lancamentos/cadastroLancamentos';
 import AuthService from '../app/service/authService';
 import ProvedorAutenticacao from './provedorAutenticacao';
-import { AuthConsumer } from './provedorAutenticacao';
 import "primereact/resources/themes/lara-light-indigo/theme.css";  //theme
 import "primereact/resources/primereact.min.css";                  //core css
 import "primeicons/primeicons.css";                                //icons
@@ -27,10 +26,10 @@ class App extends React.Component{
     AuthService.removerUsuarioAutenticado();
   }
 
-  function RotaAutenticada( { component: Component, isUsuarioAutenticado, ...props }) {
+  function RotaAutenticada( { component: Component, ...props }) {
     return (
       <Route {...props} render={ (componentProps) =>{
-        if(isUsuarioAutenticado) { 
+        if(AuthService.isUsuarioAutenticado) { 
           console.log("usuario autenticado");
           return (
             <Component {...componentProps} />
@@ -58,6 +57,7 @@ class App extends React.Component{
     }
   }
 
+  /*
   function Rotas() {
     return (
       <AuthConsumer>{
@@ -81,8 +81,10 @@ class App extends React.Component{
       { (context) => (<Rotas isUsuarioAutenticado={context.isUsuarioAutenticado} />) }
     </AuthConsumer>
   )
+  */
 
   const isUsuarioAutenticado = () => {
+    console.log(AuthService.isUsuarioAutenticado());
     return AuthService.isUsuarioAutenticado();
   }
 
@@ -118,9 +120,9 @@ class App extends React.Component{
           <Switch>
             <Route path="/login" component={Login}/>
             <Route path="/cadastro-usuarios" component={CadastroUsuario}/>
-            <RotaAutenticada isUsuarioAutenticado={} path="/lancamentos" component={ConsultaLancamentos}/>
-            <RotaAutenticada isUsuarioAutenticado={} path="/cadastro-lancamentos/:id?" component={CadastroLancamentos}/>
-            <RotaAutenticada isUsuarioAutenticado={} path="/" component={Home}/>
+            <RotaAutenticada path="/lancamentos" component={ConsultaLancamentos}/>
+            <RotaAutenticada path="/cadastro-lancamentos/:id?" component={CadastroLancamentos}/>
+            <RotaAutenticada path="/" component={Home}/>
           </Switch>
         </div>
       </Router>
