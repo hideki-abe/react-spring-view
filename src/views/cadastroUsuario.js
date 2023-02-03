@@ -2,7 +2,7 @@ import React from "react";
 import Card from "../components/card";
 import FormGroup from "../components/form-group";
 import { withRouter } from "react-router-dom";
-
+import UsuarioService from "../app/service/usuarioService";
 
 class CadastroUsuario extends React.Component {
 
@@ -13,8 +13,34 @@ class CadastroUsuario extends React.Component {
         senhaRepeticao: ''
     }
 
+    constructor() {
+        super();
+        this.service = new UsuarioService();
+    }
+
     cadastrar = () => {
-        console.log(this.state)
+        
+        const { nome, email, senha, senhaRepeticao } = this.state;
+
+        const usuario = { nome, email, senha, senhaRepeticao };
+
+        try {
+            this.service.validar(usuario);
+        } catch(erro) {
+            const mensagens = erro.mensagens;
+            mensagens.forEach(msg => {
+                console.log(msg);
+            });
+            return false;
+        }
+
+        this.service.salvar(usuario)
+            .then( response => {
+                console.log("Usuario cadastrado com sucesso! Faca o login para acessar o sistema!");
+                this.props.history.push('/login');
+            }).catch(error => {
+                console.log(error.response.data);
+            })
     }
 
     cancelar = () => {
@@ -63,8 +89,18 @@ class CadastroUsuario extends React.Component {
                                             onChange={ e => this.setState({senhaRepeticao: e.target.value})}>
                                         </input>
                                 </FormGroup>
-                                <button onClick={ this.cadastrar } type="button" className="btn btn-success">Salvar</button>
-                                <button onClick={ this.cancelar} type="button" className="btn btn-danger">Cancelar</button>
+                                <div style={ {marginTop: '1em'} }>
+                                    <button onClick={ this.cadastrar } 
+                                            type="button" 
+                                            className="btn btn-success">
+                                            <i className="pi pi-users"></i> Salvar
+                                    </button>
+                                    <button onClick={ this.cancelar} 
+                                            type="button" 
+                                            className="btn btn-danger">
+                                            <i className="pi pi-times"></i> Cancelar
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
