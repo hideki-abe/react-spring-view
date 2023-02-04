@@ -122,7 +122,7 @@ class App extends React.Component{
             <Route path="/cadastro-usuarios" component={CadastroUsuario}/>
             <RotaAutenticada path="/lancamentos" component={ConsultaLancamentos}/>
             <RotaAutenticada path="/cadastro-lancamentos/:id?" component={CadastroLancamentos}/>
-            <RotaAutenticada path="/" component={Home}/>
+            <RotaAutenticada path="" component={Home}/>
           </Switch>
         </div>
       </Router>
